@@ -1,30 +1,37 @@
+
+
 <a href="https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox" target="_blank">
   <img alt="Edit Redux-First Router Demo" src="https://codesandbox.io/static/img/play-codesandbox.svg">
 </a>
 
 
-# Simple Universal Boilerplate of [Redux-First Router](https://github.com/faceyspacey/redux-first-router)
+# Universal Boilerplate [Apollo-RFX-PRISMA-ssr-boilerplate](https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate)
 
-
-![redux-first-router-demo screenshot](./screenshot.png)
-> For a demo/boilerplate that goes even farther make sure to check out the **["DEMO"](https://github.com/faceyspacey/redux-first-router-demo)**. A lot more features and use-cases are covered there, but this *boilerplate* is the best place to start to learn the basics of RFR, especially if you're new to any of these things: SSR, Code Splitting, Express, APIs, Webpack and Redux in general.
+![redux-first-router-demo screenshot](./screenshot.png) 
+ A lot more features and use-cases are covered there, but this *boilerplate* is the best place to start to learn the basics of RFR,
+  especially if you're new to any of these things: SSR, Code Splitting, Express, APIs, Webpack-4 and Redux in general.
 
 
 ## Installation
 
 ```
-git clone https://github.com/faceyspacey/redux-first-router-boilerplate
-cd redux-first-router-boilerplate
-yarn
-yarn start
+git clone https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate
+cd Apollo-RFX-PRISMA-ssr-boilerplate
+npm install
+
+;then start simply develop on:
+
+npm run start
 ```
 
 
 ## Files You Should Look At:
 
 *client code:*
+- [***lib/***](./lib/) - ***(the source code of RFR)***
+- [***webpack/***](./webpack/) - ***the webpack-4 configuration***
 - [***src/configureStore.js***](./src/configureStore.js)
-- [***src/routesMap.js***](./src/routesMap.js) - ***(the primary work of RFR)***
+- [***src/routes.js***](./src/routesMap.js) - ***(the primary work of RFR)***
 - [***src/components/Switcher.js***](./src/components/Switcher.js) - *(universal component concept)*
 - [***src/components/Sidebar.js***](./src/components/Sidebar.js) - *(look at the different ways to link + dispatch URL-aware actions)*
 
