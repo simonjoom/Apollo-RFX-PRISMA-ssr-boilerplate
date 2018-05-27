@@ -40,9 +40,9 @@ Font-awesome.scss is builded at first build (take long ) but after very fast dev
 ## Files You Should Look At:
 
 *client code:*
-- [***lib/***](./lib/index.js) - ***(the source code of RFR)***
-- [***webpack/***](./webpack/server.dev.js) - ***(the ssr webpack-4 configuration)***
-- [***webpack/***](./webpack/client.dev.js) - ***(the client webpack-4 configuration)***
+- [***lib***](./lib/index.js) - ***(the source code of RFR)***
+- [***webpack***](./webpack/server.dev.js) - ***(the ssr webpack-4 configuration)***
+- [***webpack***](./webpack/client.dev.js) - ***(the client webpack-4 configuration)***
 - [***src/configureStore.js***](./src/configureStore.js)
 - [***src/routes.js***](./src/routesMap.js) - ***(the primary work of RFR)***
 - [***src/components/Switcher.js***](./src/components/Switcher.js) - *(universal component concept)*
