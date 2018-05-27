@@ -1,0 +1,99 @@
+{
+  "_from": "extract-css-chunks-webpack-plugin@^2.0.15",
+  "_id": "extract-css-chunks-webpack-plugin@2.0.19",
+  "_inBundle": false,
+  "_integrity": "sha512-zSQx/jVLgs4uWDfMirYA/Gr78GnvJfcmxo6FIx4YvgU+ihtxPVmtuxyyIBSBptgBJtXcDB7z96KCDEVUo8Ksng==",
+  "_location": "/extract-css-chunks-webpack-plugin",
+  "_phantomChildren": {
+    "co": "4.6.0",
+    "json-stable-stringify": "1.0.1"
+  },
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "extract-css-chunks-webpack-plugin@^2.0.15",
+    "name": "extract-css-chunks-webpack-plugin",
+    "escapedName": "extract-css-chunks-webpack-plugin",
+    "rawSpec": "^2.0.15",
+    "saveSpec": null,
+    "fetchSpec": "^2.0.15"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/extract-css-chunks-webpack-plugin/-/extract-css-chunks-webpack-plugin-2.0.19.tgz",
+  "_shasum": "a2babd7f51568165944f5ed4816bcd4bf84f5bbb",
+  "_spec": "extract-css-chunks-webpack-plugin@^2.0.15",
+  "_where": "/Users/simon/redux-first-router/examples/boilerplate",
+  "author": {
+    "name": "James Gillmore",
+    "email": "james@faceyspacey.com"
+  },
+  "bugs": {
+    "url": "https://github.com/faceyspacey/extract-css-chunks-webpack-plugin/issues"
+  },
+  "bundleDependencies": false,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "ajv": "4.11.2",
+    "async": "^2.5.0",
+    "loader-utils": "^1.1.0",
+    "schema-utils": "^0.3.0",
+    "style-loader": "^0.18.2",
+    "webpack-sources": "^1.0.1"
+  },
+  "deprecated": false,
+  "description": "Extract CSS from chunks into stylesheets + HMR",
+  "devDependencies": {
+    "codecov.io": "^0.1.2",
+    "commitizen": "^2.9.6",
+    "coveralls": "^2.11.2",
+    "css-loader": "^0.28.0",
+    "cz-conventional-changelog": "^2.0.0",
+    "file-loader": "^0.11.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "1.3.0",
+    "raw-loader": "^0.5.1",
+    "semantic-release": "^6.3.2",
+    "should": "^11.1.2",
+    "standard-version": "^4.0.0",
+    "webpack": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=4.3.0 < 5.0.0 || >= 5.10"
+  },
+  "files": [
+    "schema",
+    "ExtractedModule.js",
+    "index.js",
+    "loader.js",
+    "OrderUndefinedError.js",
+    "hotModuleReplacement.js"
+  ],
+  "homepage": "http://github.com/faceyspacey/extract-css-chunks-webpack-plugin",
+  "license": "MIT",
+  "main": "index.js",
+  "name": "extract-css-chunks-webpack-plugin",
+  "peerDependencies": {
+    "webpack": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faceyspacey/extract-css-chunks-webpack-plugin.git"
+  },
+  "scripts": {
+    "build:example": "(cd example && webpack)",
+    "cm": "git-cz",
+    "cover": "istanbul cover _mocha",
+    "release": "standard-version",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "test": "mocha",
+    "travis": "npm run cover -- --report lcovonly"
+  },
+  "version": "2.0.19"
+}
