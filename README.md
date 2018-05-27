@@ -1,3 +1,14 @@
+# Universal Boilerplate [Apollo-RFX-PRISMA-ssr-boilerplate](https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate)
+
+## Inside
+- ***Apollo 2.0*** with ***Prisma*** already setup (no need to make a prisma deploy or a prisma init the server take care)
+- Socket apollo work and setting up
+- Apollo Playground in [http://localhost:4000/playground/](http://localhost:4000/playground/)
+- Redux integrated with Redux-first-router
+- Code splitting with react-universal-component
+- Webpack 4
+- Babel 7.0 (latest)
+- 'apollo-cache-redux' to use redux and apollo 2.0
 
 
 <a href="https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox" target="_blank">
@@ -5,12 +16,14 @@
 </a>
 
 
-# Universal Boilerplate [Apollo-RFX-PRISMA-ssr-boilerplate](https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate)
-
 ![Apollo Universal Boilerplate screenshot](./screenshot.jpg) 
  A lot more features and use-cases are covered there, but this *boilerplate* is the best place to start to learn the basics of RFR,
   especially if you're new to any of these things: SSR, Code Splitting, Express, APIs, Webpack-4 and Redux in general.
 
+
+##
+The application run by default here:
+[http://localhost:3000/](http://localhost:3000/)
 
 ## Installation
 
@@ -27,11 +40,22 @@ npm run start
 ## ROADMAP
 The repo is well tested in Developpment mode only first
 
-I really need a good developper with PRISMA or graphql to work on 
+I really need a good developper with PRISMA or graphql to work on:
+- Login user for facebook and others
+- Tchat implementation Backend
+- Code optimization
+
+Right now i use the store of Redux and apollo i want to use only the Apollo one .. 
+I'm looking for the solution to delete apollo-cache-redux and these 2 providers:
+
+```
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+```
+
 
 ## We use for faster build:
-AutoDllPlugin /cache-loader/thread-loader
-
+AutoDllPlugin /cache-loader /thread-loader
 Please be sure to remove .cache-loader sometimes to check the working process
 
 Font-awesome.scss is builded at first build (take long ) but after very fast developpement because cache-loader. 
@@ -47,7 +71,6 @@ Font-awesome.scss is builded at first build (take long ) but after very fast dev
 - [***src/routes.js***](./src/routesMap.js) - ***(the primary work of RFR)***
 - [***src/components/Switcher.js***](./src/components/Switcher.js) - *(universal component concept)*
 - [***src/components/Sidebar.js***](./src/components/Sidebar.js) - *(look at the different ways to link + dispatch URL-aware actions)*
-
 
 *server code:*
 - [***server/index.js***](./server/index.js)
