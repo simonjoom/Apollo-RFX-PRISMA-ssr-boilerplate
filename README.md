@@ -7,7 +7,7 @@
 
 # Universal Boilerplate [Apollo-RFX-PRISMA-ssr-boilerplate](https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate)
 
-![redux-first-router-demo screenshot](./screenshot.png) 
+![Apollo Universal Boilerplate screenshot](./screenshot.jpg) 
  A lot more features and use-cases are covered there, but this *boilerplate* is the best place to start to learn the basics of RFR,
   especially if you're new to any of these things: SSR, Code Splitting, Express, APIs, Webpack-4 and Redux in general.
 
@@ -23,6 +23,18 @@ npm install
 
 npm run start
 ```
+
+## ROADMAP
+The repo is well tested in Developpment mode only first
+
+I really need a good developper with PRISMA or graphql to work on 
+
+## We use for faster build:
+AutoDllPlugin /cache-loader/thread-loader
+
+Please be sure to remove .cache-loader sometimes to check the working process
+
+Font-awesome.scss is builded at first build (take long ) but after very fast developpement because cache-loader. 
 
 
 ## Files You Should Look At:
