@@ -71,7 +71,7 @@ Font-awesome.scss is builded at first build (take long ) but after very fast dev
 - [***webpack***](./webpack/client.dev.js) - ***(the client webpack-4 configuration)***
 - [***src/configureStore.js***](./src/configureStore.js)
 - [***src/routes.js***](./src/routesMap.js) - ***(the primary work of RFR)***
-- [***src/page***](./src/page - ***(All your pages are here / each one seperated and splitted by react-universal)***
+- [***src/page***](./src/page) - ***(All your pages are here / each one seperated and splitted by react-universal)***
 - [***src/components/Switcher.js***](./src/components/Switcher.js) - *(universal component concept)*
 - [***src/components/Sidebar.js***](./src/components/Sidebar.js) - *(look at the different ways to link + dispatch URL-aware actions)*
 
