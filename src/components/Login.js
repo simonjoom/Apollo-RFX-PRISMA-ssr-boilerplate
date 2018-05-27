@@ -69,15 +69,16 @@ class Login extends Component {
           <h4 className="mb-3">{this.state.login ? 'Login' : 'Sign Up'}</h4>
           <div className="flex flex-column">
             <Button onClick={this.toggleDrawer('left', false)} className="left">Close X</Button>
+            
+            {!this.state.login && (
+              <Input
+                value={this.state.name}
+                onChange={e => this.setState({name: e.target.value})}
+                type="text"
+                placeholder="Your name"
+              />
+            )}
             <FormControl>
-              {!this.state.login && (
-                <Input
-                  value={this.state.name}
-                  onChange={e => this.setState({name: e.target.value})}
-                  type="text"
-                  placeholder="Your name"
-                />
-              )}
               <InputLabel htmlFor="adornment-email">Email</InputLabel>
               <Input
                 id="adornment-email"
@@ -85,7 +86,8 @@ class Login extends Component {
                 onChange={this.handleChange('email')}
                 placeholder="Your email address"
               />
-              
+            </FormControl>
+            <FormControl>
               <InputLabel htmlFor="adornment-password">Password</InputLabel>
               <Input
                 id="adornment-password"

@@ -8,6 +8,7 @@
 - Code splitting with react-universal-component
 - Webpack 4
 - Babel 7.0 (latest)
+- react-intl working (flags and language management)
 - 'apollo-cache-redux' to use redux and apollo 2.0
 
 
@@ -44,6 +45,7 @@ I really need a good developper with PRISMA or graphql to work on:
 - Login user for facebook and others
 - Tchat implementation Backend
 - Code optimization
+- [***src/containers***](./src/containers) - ***(some containers to add into)***
 
 Right now i use the store of Redux and apollo i want to use only the Apollo one .. 
 I'm looking for the solution to delete apollo-cache-redux and these 2 providers:
@@ -69,6 +71,7 @@ Font-awesome.scss is builded at first build (take long ) but after very fast dev
 - [***webpack***](./webpack/client.dev.js) - ***(the client webpack-4 configuration)***
 - [***src/configureStore.js***](./src/configureStore.js)
 - [***src/routes.js***](./src/routesMap.js) - ***(the primary work of RFR)***
+- [***src/page***](./src/page - ***(All your pages are here / each one seperated and splitted by react-universal)***
 - [***src/components/Switcher.js***](./src/components/Switcher.js) - *(universal component concept)*
 - [***src/components/Sidebar.js***](./src/components/Sidebar.js) - *(look at the different ways to link + dispatch URL-aware actions)*
 
