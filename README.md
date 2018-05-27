@@ -22,11 +22,11 @@
   especially if you're new to any of these things: SSR, Code Splitting, Express, APIs, Webpack-4 and Redux in general.
 
 
-The application run by default here:
-###[http://localhost:3000/](http://localhost:3000/)
+### The application run by default here:
+### [http://localhost:3000/](http://localhost:3000/)
 
-The playground run by default here:
-###[http://localhost:4000/playground/](http://localhost:4000/playground/)
+### The playground run by default here:
+### [http://localhost:4000/playground/](http://localhost:4000/playground/)
 
 ## Installation
 
