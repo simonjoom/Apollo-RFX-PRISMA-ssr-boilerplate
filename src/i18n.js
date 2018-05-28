@@ -16,7 +16,7 @@ addLocaleData(zhLocaleData);
 
 export const DEFAULT_LOCALE = 'en';
 
-export const appLocales = ['en', 'zh'];
+export const appLocales = ['en', 'zh', "ru", "uk", "fr", "pt"];
 
 export const formatTranslationMessages = (locale, messages) => {
   const defaultFormattedMessages =
@@ -28,11 +28,15 @@ export const formatTranslationMessages = (locale, messages) => {
       !messages[key] && locale !== DEFAULT_LOCALE
         ? defaultFormattedMessages[key]
         : messages[key];
-    return Object.assign(formattedMessages, { [key]: formattedMessage });
+    return Object.assign(formattedMessages, {[key]: formattedMessage});
   }, {});
 };
 
 export const translationMessages = {
   en: formatTranslationMessages('en', enTranslationMessages),
   zh: formatTranslationMessages('zh', zhTranslationMessages),
+  ru: formatTranslationMessages('ru', enTranslationMessages),
+  uk: formatTranslationMessages('uk', enTranslationMessages),
+  fr: formatTranslationMessages('fr', enTranslationMessages),
+  pt: formatTranslationMessages('pt', enTranslationMessages)
 };

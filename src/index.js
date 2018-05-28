@@ -10,7 +10,6 @@ import App from './components/App'
 import initApollo from '../initApollo'
 
 const {store, firstRoute} = configureStore(window.REDUX_STATE)
-
 const client = initApollo(store);
 
 const root = document.getElementById('root');

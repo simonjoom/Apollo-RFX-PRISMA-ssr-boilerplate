@@ -3,6 +3,13 @@ import routes from './routes'
 
 export const isServer = typeof window === 'undefined'
 
+let lastId = 0;
+
+export default function(prefix = 'id') {
+  lastId++;
+  return `${prefix}${lastId}`;
+}
+
 export const fetchData = async (path, jwToken) => {
   console.log("fetch",`http://localhost:3000${path}`)
   return fetch(`http://localhost:3000${path}`, {

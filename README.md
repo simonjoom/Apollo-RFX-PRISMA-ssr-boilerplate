@@ -11,7 +11,6 @@
 - react-intl working (flags and language management)
 - 'apollo-cache-redux' to use redux and apollo 2.0
 
-
 <a href="https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox" target="_blank">
   <img alt="Edit Redux-First Router Demo" src="https://codesandbox.io/static/img/play-codesandbox.svg">
 </a>

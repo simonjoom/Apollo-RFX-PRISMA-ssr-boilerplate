@@ -1,5 +1,8 @@
+/*
+ * Copyright (c) SkiScool
+ */
+
 .ul {
-    position: fixed;
     right: 10px;
     top: 0px;
     z-index: 100;

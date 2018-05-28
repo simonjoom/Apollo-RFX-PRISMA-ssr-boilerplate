@@ -12,8 +12,46 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import withStyle from '@material-ui/core/styles/withStyles';
 
 const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+const styleSheet = {
+  menu: {},
+  content: {
+    margin: 0,
+  },
+};
+
+function handleLogout() {
+  // dispatch('auth.logout');
+}
+
+class MyMenu extends Component {
+  handleSettings = (e) => {
+    this.props.handleRequestClose()
+    // dispatch('modal.accountModal.showCreateAccountModal', 'open');
+  }
+  
+  render() {
+    const {classes, open, anchorEl, handleRequestClose} = this.props;
+    return (<Menu
+      id="simple-menu"
+      anchorEl={anchorEl}
+      className={classes.menu}
+      open={open}
+      onClose={handleRequestClose}
+    >
+      <MenuItem onClick={handleRequestClose}>Profile</MenuItem>
+      <MenuItem onClick={this.handleSettings}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+    </Menu>)
+  }
+}
+
+const MyMenyS = withStyle(styleSheet)(MyMenu)
 
 class Login extends Component {
   
@@ -30,10 +68,12 @@ class Login extends Component {
     password: '',
     name: '',
     top: false,
-    left: false,
+    left: true,
     bottom: false,
     right: false,
-    showPassword: false
+    showPassword: false,
+    openMenu: false,
+    anchorEl:null
   }
   
   handleMouseDownPassword = event => {
@@ -57,6 +97,8 @@ class Login extends Component {
   handleChange = prop => event => {
     this.setState({[prop]: event.target.value});
   };
+  handleClick = (event) => this.setState({openMenu: true, anchorEl: event.currentTarget});
+  handleRequestClose = () => this.setState({openMenu: false});
   
   render() {
     console.log("Logincontext", this.context, this.props.context)
@@ -122,7 +164,16 @@ class Login extends Component {
                 </Button>
               </div>
             </FormControl>
-          
+            <Button
+              aria-owns="simple-menu"
+              aria-haspopup="true"
+              onClick={this.handleClick}
+            > {this.props.getemail || "Whenconnected"}
+              <i className="fa fa-caret-down"/>
+            </Button>
+            
+            <MyMenyS open={this.state.openMenu} anchorEl={this.state.anchorEl}
+                     handleRequestClose={this.handleRequestClose}/>
           </div>
         </SwipeableDrawer>
       </div>

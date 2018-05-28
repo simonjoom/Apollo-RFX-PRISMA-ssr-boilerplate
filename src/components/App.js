@@ -47,6 +47,7 @@ class CApp extends Component {
       lg: "lg" == width,
     };
   }
+  
   componentWillMount() {
     this.savecontext = this.createDefaultContext();
   }
@@ -90,6 +91,10 @@ const App = ({feedQuery, ...props}) => {
     .then(() => Promise.all([
         import('intl/locale-data/jsonp/en.js'),
         import('intl/locale-data/jsonp/zh.js'),
+        import('intl/locale-data/jsonp/fr.js'),
+        import('intl/locale-data/jsonp/uk.js'),
+        import('intl/locale-data/jsonp/ru-RU.js'),
+        import('intl/locale-data/jsonp/pt-BR.js')
       ])
     )
     .then(() => renderFn(translationMessages))
