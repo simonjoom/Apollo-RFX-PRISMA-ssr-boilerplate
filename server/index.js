@@ -79,6 +79,7 @@ app.get('/api/video/:slug', async (req, res) => {
 
 if (DEV) {
   console.log("run")
+  let isFirstCompile = true;
   let multiCompiler, devMiddleware;
   try {
     multiCompiler = webpack([clientConfig, serverConfig]);
@@ -100,10 +101,11 @@ if (DEV) {
     app.use(
       // keeps serverRender updated with arg: { clientStats, outputPath }
       webpackHotServerMiddleware(multiCompiler, {
-        serverRendererOptions: {outputPath:clientConfig.output.path}
+        serverRendererOptions: {outputPath: clientConfig.output.path}
       }))
     
   } catch (err) {
+    isFirstCompile = true;
     console.log(chalk.red('Failed to compile.'));
     console.log();
     console.log(err.message || err);
@@ -115,7 +117,6 @@ if (DEV) {
     console.log('Compiling...');
   });
   
-  let isFirstCompile = true;
   const QLServer = new GraphQLServer({
     typeDefs: 'server/schema.graphql',
     resolvers,
@@ -158,7 +159,6 @@ if (DEV) {
         })
       })
     }
-    isFirstCompile = false;
     // If errors exist, only show errors.
     if (messages.errors.length) {
       // Only keep the first error. Others are often indicative
@@ -168,7 +168,9 @@ if (DEV) {
       }
       console.log(chalk.red('Failed to compile.\n'));
       console.log(messages.errors.join('\n\n'));
+      return;
     }
+    isFirstCompile = false;
     
     // Show warnings if no errors were found.
     if (messages.warnings.length) {

@@ -8,7 +8,7 @@ import { ReduxCache } from 'apollo-cache-redux';
 import configureStore from './configureStore'
 import initApollo from '../initApollo'
 import App from '../src/components/App'
-import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import { ApolloProvider, getDataFromTree } from 'react-apollo'
 
 function wrapAsync(fn) {
   return function(req, res, next) {
@@ -18,14 +18,14 @@ function wrapAsync(fn) {
   };
 }
 
-export default ({clientStats,serverStats}) => wrapAsync(async (req, res) => {
-  const store = await configureStore(req, res)
+export default ({clientStats, serverStats}) => wrapAsync(async (req, res) => {
+  const {store, client} = await configureStore(req, res)
   // } catch (e) {
   //   return next('Unexpected error occurred', e);
 // }
   if (!store) return // no store means redirect was already served
   
-  let client = initApollo(store);
+  // let client = initApollo();
   
   const isDev = process.env.NODE_ENV === 'development';
   const myApp = createApp(App, client, store)
@@ -42,13 +42,16 @@ export default ({clientStats,serverStats}) => wrapAsync(async (req, res) => {
     
     const state = store.getState();
     let serverState = Object.assign(
-      state,
-      {apollo: {data: client.cache.extract()}}
-    )
+      state
+      // {apollo: {data: client.cache.extract()}}
+    );
+    
+    let serverState2 = client.cache.extract();
     
     console.log("initialStateapp", serverState)
     
     const stateJson = JSON.stringify(serverState)
+    const stateJson2 = JSON.stringify(serverState2)
     //clearChunks()
     
     const chunkNames = flushChunkNames()
@@ -78,7 +81,7 @@ export default ({clientStats,serverStats}) => wrapAsync(async (req, res) => {
           ${styles}
         </head>
         <body>
-          <script>window.REDUX_STATE = ${stateJson}</script>
+          <script>window.REDUX_STATE = ${stateJson};window.__APOLLO_STATE__ = ${stateJson2}</script>
           <div id="root">${appString}</div>
           ${cssHash}
           ${runtime}
