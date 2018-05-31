@@ -1,0 +1,7 @@
+.vscode/**
+typings/**
+dist/**
+src/**
+autodll-webpack-plugin-webpack4/**
+extract-css-chunks-webpack-plugin/**
+**/*.map
