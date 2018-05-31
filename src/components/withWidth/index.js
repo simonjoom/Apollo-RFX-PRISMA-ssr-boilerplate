@@ -83,7 +83,7 @@ const withWidth = (options = {}) => Component => {
     }
     
     render() {
-      const {initialWidth, width, ...other} = this.props;
+      const {initialWidth, width, ...other} = this.props; 
       const props = {
         width: width || this.state.width || initialWidth,
         ...other,
