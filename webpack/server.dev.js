@@ -12,7 +12,7 @@ const res = p => path.resolve(__dirname, p)
 const externals = fs
 .readdirSync(res('../node_modules'))
 .filter(x =>
-  !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks|react-universal-component|extract-css-chunks-webpack-plugin|path-to-regexp/.test(x))
+  !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks|path-to-regexp/.test(x))
 .reduce((externals, mod) => {
   externals[mod] = `commonjs ${mod}`
   return externals
@@ -23,8 +23,8 @@ module.exports = {
   name: 'server',
   target: 'node',
   cache: false,
-  //devtool: 'source-map',
-  devtool: false,
+  devtool: 'source-map',
+  //devtool: false,
   entry: {
     main: ['fetch-everywhere', res('../server/render.js')],
     vendor: [res("../font-awesome.scss"), res("../StyleApp.scss")],
@@ -39,6 +39,11 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,

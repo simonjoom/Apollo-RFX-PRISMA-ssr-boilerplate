@@ -3,7 +3,7 @@ import path from 'path'
 import express from 'express'
 import favicon from 'serve-favicon'
 import webpack from 'webpack'
-import { AUTH_TOKEN, PORTAPI, PORT } from '../constants'
+import { AUTH_TOKEN, PORTAPI, PORT } from './constants'
 
 const chalk = require('chalk');
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -46,7 +46,6 @@ const resolvers = {
 
 const DEV = process.env.NODE_ENV === 'development';
 
-console.log("DEV", process.env.NODE_ENV)
 let clientConfig;
 let serverConfig, formatWebpackMessages;
 if (DEV) {
@@ -76,6 +75,28 @@ app.get('/api/video/:slug', async (req, res) => {
   const data = await findVideo(req.params.slug, jwToken)
   res.json(data)
 })
+const options = {
+  port: PORTAPI,
+  debug: true,
+  //endpoint: "https://eu1.prisma.sh/public-foamcentaur-934/hackernews-graphql-js/dev/",
+  subscriptions: "/subscriptions",
+  playground: "/playground"
+};
+const QLServer = new GraphQLServer({
+  typeDefs: 'server/schema.graphql',
+  resolvers,
+  context: req => ({
+    ...req,
+    db: new Prisma({
+      typeDefs: 'server/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
+      // endpoint: 'https://us1.prisma.sh/public-relicgargoyle-251/ts-test/dev', // the endpoint of the Prisma API
+      endpoint: "https://eu1.prisma.sh/public-foamcentaur-934/hackernews-graphql-js/dev/",
+      debug: true, // log all GraphQL queries & mutations sent to the Prisma API
+      secret: 'mysecret123'
+      // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
+    }),
+  })
+});
 
 if (DEV) {
   console.log("run")
@@ -116,22 +137,7 @@ if (DEV) {
   multiCompiler.hooks.invalid.tap('invalid', () => {
     console.log('Compiling...');
   });
-  
-  const QLServer = new GraphQLServer({
-    typeDefs: 'server/schema.graphql',
-    resolvers,
-    context: req => ({
-      ...req,
-      db: new Prisma({
-        typeDefs: 'server/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
-        // endpoint: 'https://us1.prisma.sh/public-relicgargoyle-251/ts-test/dev', // the endpoint of the Prisma API
-        endpoint: "https://eu1.prisma.sh/public-foamcentaur-934/hackernews-graphql-js/dev/",
-        debug: true, // log all GraphQL queries & mutations sent to the Prisma API
-        secret: 'mysecret123'
-        // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
-      }),
-    })
-  });
+
   
   multiCompiler.hooks.done.tap('done', stats => {
     
@@ -143,13 +149,6 @@ if (DEV) {
     
     if (isSuccessful && isFirstCompile) {
       console.log(chalk.green('Compiled successfully!'));
-      const options = {
-        port: PORTAPI,
-        debug: true,
-        //endpoint: "https://eu1.prisma.sh/public-foamcentaur-934/hackernews-graphql-js/dev/",
-        subscriptions: "/subscriptions",
-        playground: "/playground"
-      };
       
       QLServer.start(options, () => {
         console.log(`Api Server is running on localhost:${PORTAPI}`)
@@ -190,9 +189,20 @@ if (DEV) {
       );
     }
   });
+
+ //just to inform there is a problem in serverside!
+  app.use(function(error, req, res, next) {
+    // Gets called because of `wrapAsync()`
+    res.json({message: error.message});
+  })
+
 } else {
-  const clientStats = require('../buildClient/stats.json') // eslint-disable-line import/no-unresolved
-  const serverRender = require('../buildServer/main.js').default // eslint-disable-line import/no-unresolved
+  var debug = typeof v8debug === 'object' || /--debug|--inspect/.test(process.execArgv.join(' '));
+
+  let serverRender = require('../buildServer/main.js').default // eslint-disable-line import/no-unresolved
+  
+  let clientStats = require('../buildClient/stats.json') // eslint-disable-line import/no-unresolved
+  
   
   app.use("/static", express.static(outputPath))
   app.use(serverRender({clientStats, outputPath}))
@@ -205,11 +215,7 @@ if (DEV) {
   })
 }
 
-app.use(function(error, req, res, next) {
-    // Gets called because of `wrapAsync()`
-    res.json({message: error.message});
-  }
-)
+
 
 
 

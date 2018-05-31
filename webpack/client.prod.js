@@ -7,7 +7,7 @@ module.exports = {
   mode: 'production',
   name: 'client',
   target: 'web',
-  devtool: 'source-map',
+  devtool: "cheap-module-source-map",
   entry: ['@babel/polyfill',
           'fetch-everywhere',path.resolve(__dirname, '../src/index.js')],
   output: {
@@ -19,32 +19,77 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use:{
           loader: 'babel-loader',
           options: {
             cacheDirectory: false,
-            babelrc: true
+            extends: path.resolve(__dirname, '../.babelrcdev'),
+            babelrc: false
           }
         }
       },
       {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: ExtractCssChunks.extract({
-          use: {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              localIdentName: '[name]__[local]--[hash:base64:5]'
-            }
-          }
+          use: [
+            {loader: 'cache-loader'},
+            {loader: 'thread-loader', options: {workers: 4}},
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[name]__[local]--[hash:base64:5]'
+              }
+            }]
         })
+      },
+      {
+    test: /\.svg$/,
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: false,
+          babelrc: false
+        }
+      },
+      require.resolve('svgr/webpack'),
+      {
+        loader: require.resolve('url-loader'),
+        options: {
+          limit: 1000,
+          name: '[path][name].[hash:8].[ext]'
+        }
       }
-    ]
+    ],
   },
-  resolve: {
-    extensions: ['.js', '.css']
+  {
+    test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+    use: {
+      loader: require.resolve('url-loader'),
+      options: {
+        limit: 10,
+        name: '[path][name].[hash:8].[ext]'
+      }
+    }
+    
+  }
+]
+},
+  resolve: {  
+     extensions: ['.mjs', '.js', '.jsx', '.css', '.scss'],
+  alias: {
+    'rfx-link': path.resolve(__dirname, '../lib/Link'),
+    'rfx': path.resolve(__dirname, '../lib'),
+  }
   },
   optimization: {
     runtimeChunk:true,
@@ -82,13 +127,13 @@ module.exports = {
       filename: '[name].[chunkhash].js',
       minChunks: Infinity
     }),*/
-    
+    /*
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    /* new webpack.optimize.UglifyJsPlugin({
+     new webpack.optimize.UglifyJsPlugin({
        compress: {
          screw_ie8: true,
          warnings: false

@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const AutoDllPlugin = require("../autodll-webpack-plugin-webpack-4")
 const ExtractCssChunks = require('../extract-css-chunks-webpack-plugin')
+const StatsPlugin = require('stats-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -13,7 +14,7 @@ module.exports = {
            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
            path.resolve(__dirname, '../src/index.js')]
   },
-  cache: true,
+  cache: false,
   output: {
     filename: '[name].js',
     chunkFilename: '[name].js',
@@ -22,6 +23,11 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -125,6 +131,7 @@ module.exports = {
     }
   },
   plugins: [
+    new StatsPlugin('stats.json'),
     /*new webpack.optimize.CommonsChunkPlugin({
       names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
       filename: '[name].js',
@@ -147,16 +154,20 @@ module.exports = {
           'react-redux',
           'react-intl',
           'graphql',
+          "graphql-yoga",
           "apollo-link",
           "apollo-client",
           "apollo-cache",
-          "apollo-client-preset",
+          "apollo-cache-inmemory",
+          "apollo-boost",
+          "svgr",
+          "apollo-link-state",
           "apollo-link-ws",
           "apollo-link-http",
           "apollo-link-http-common",
           'apollo-utilities',
-          'rfx',
-          "rfx-link"
+        //  'rfx',
+        //  "rfx-link"
           //  path.resolve(__dirname, '../lib')
           //  'rfx',
           //  "rfx-link",
