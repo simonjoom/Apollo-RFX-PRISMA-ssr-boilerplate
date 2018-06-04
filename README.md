@@ -21,12 +21,7 @@ I propose just to share this code , because this HOW-TO can help people to work 
 - ***Apollo 2.0*** with ***Prisma*** already setup (no need to make a prisma deploy or a prisma init the server take care)
 - Socket apollo work and setting up
 - Apollo Playground in [http://localhost:4000/playground/](http://localhost:4000/playground/)
-
-
-- Redux integrated with Redux-first-router : 
-<a href="https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox" target="_blank">
-  <img alt="Demo redux-first-router" src="https://codesandbox.io/static/img/play-codesandbox.svg">
-</a>
+- Redux integrated with Redux-first-router
 - Code splitting with react-universal-component
 - Webpack 4 with **babel-watch**
 - sass-loader/css-loader in hot reload
@@ -47,6 +42,11 @@ https://github.com/faceyspacey/redux-first-router/tree/rudy-respond/src
 ![Apollo Universal Boilerplate screenshot](./screenshot.jpg) 
  A lot more features and use-cases are covered there, but this *boilerplate* is the best place to start to learn the basics of RFR,
   especially if you're new to any of these things: SSR, Code Splitting, Express, APIs, Webpack-4 and Redux in general.
+
+You can test redux-first-router on sandbox:
+<a href="https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox" target="_blank">
+  <img alt="Demo redux-first-router" src="https://codesandbox.io/static/img/play-codesandbox.svg">
+</a>
 
 
 ## Installation
@@ -136,6 +136,7 @@ LIke a lot i didn't like to have 2 store one for redux and one for apollo
       </ApolloProvider>
       </Provider>
 ```
+As well after thinking that a apollo-cache-redux is not the solution (we want apollo)
 
 So after many investigation with redux original code.   
 I decided to create a modified 'createStore' from original redux ->see [***configureStore.js***](./src/configureStore.js)  
