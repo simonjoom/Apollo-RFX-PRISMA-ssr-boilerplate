@@ -8,13 +8,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "compile",
-            "runtimeExecutable": "nodemon",
-            "program": "/Users/simon/boilerplate/buildServer/index.js",
-            "restart": true,
-            "preLaunchTask": "build",
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
+            "name": "Launch via NPM",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "test"
+            ],
+            "port": 9229
         }
     ]
 }

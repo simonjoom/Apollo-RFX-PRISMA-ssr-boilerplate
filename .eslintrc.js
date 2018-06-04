@@ -2,6 +2,7 @@ module.exports = {
   parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
+      jsx: true,
       generators: true,
       experimentalObjectRestSpread: true
     },
@@ -16,7 +17,7 @@ module.exports = {
     },
     'import/resolver': {
       node: {
-        extensions: ['.js', '.json', '.css', '.styl']
+        extensions: ['.ts','.tsx','.js','.jsx', '.json', '.css', '.styl']
       }
     }
   },
@@ -41,6 +42,8 @@ module.exports = {
       'error',
       'always',
       {
+        ts: 'never',
+        tsx: 'never',
         js: 'never',
         jsx: 'never',
         styl: 'never',

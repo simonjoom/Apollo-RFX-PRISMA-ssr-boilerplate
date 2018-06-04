@@ -12,7 +12,7 @@ const languageState = state => {
 /**
  * Select the language locale
  */
-const makeSelectLocale = () =>
-  createSelector(selectLanguage, languageState);
+const makeSelectLocale = (state) =>
+  createSelector(selectLanguage, languageState)(state);
 
 export { selectLanguage, makeSelectLocale };

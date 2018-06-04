@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'rfx-link'
+import { Link } from '../Link'
 import { AUTH_TOKEN } from '../../constants'
 
 class Header extends Component {

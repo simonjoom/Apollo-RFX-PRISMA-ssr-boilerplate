@@ -288,6 +288,8 @@ function restartAppInternal() {
     runnerExecArgv.push('--debug-brk');
   }
 
+    runnerExecArgv.push('--inspect');
+   // runnerExecArgv.push('--inspect-brk=29998');
   const app = fork(path.resolve(__dirname, 'runner.js'), { execArgv: runnerExecArgv });
 
   app.on('message', (data) => {

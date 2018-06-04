@@ -3,18 +3,44 @@ const webpack = require('webpack')
 const AutoDllPlugin = require("../autodll-webpack-plugin-webpack-4")
 const ExtractCssChunks = require('../extract-css-chunks-webpack-plugin')
 const StatsPlugin = require('stats-webpack-plugin')
+const loadPartialConfig = require('@babel/core').loadPartialConfig
+
+let preset = loadPartialConfig({
+  presets: [
+   [require('@babel/preset-env'), { useBuiltIns: false,modules:"commonjs", debug: true }],
+   require('@babel/preset-react'),
+   require('@babel/preset-flow')
+ ],
+ plugins: [
+   require('@babel/plugin-proposal-export-default-from'),
+   require('@babel/plugin-syntax-dynamic-import'),
+   require('babel-plugin-universal-import'),
+   require('@babel/plugin-proposal-class-properties'),
+   [require('@babel/plugin-transform-runtime'), {
+     helpers: false,
+     polyfill: false,
+     regenerator: true
+   }]
+ ] 
+ })
+
+preset.options.cacheDirectory = true
+preset.options.sourceMap = true
+preset.options.passPerPreset = false
+preset.options.babelrc = false
 
 module.exports = {
   mode: 'development',
   name: 'client',
   target: 'web',
-  devtool: "cheap-module-source-map",
+  devtool: 'source-map',
+  //devtool: "cheap-module-source-map",
   entry: {
     main: ['@babel/polyfill', "./extract-css-chunks-webpack-plugin/hotModuleReplacement2",
-           'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
-           path.resolve(__dirname, '../src/index.js')]
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+      path.resolve(__dirname, '../src/index.jsx')]
   },
-  cache: false,
+  cache: true,
   output: {
     filename: '[name].js',
     chunkFilename: '[name].js',
@@ -26,18 +52,44 @@ module.exports = {
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: "javascript/auto",
+        type: "javascript/auto"
       },
       {
-        test: /\.js$/,
+        test: /\.rsx?$/,
+        use: {
+          loader: 'awesome-typescript-loader',
+          options: {
+            useBabel: true,
+            babelOptions: {
+              babelrc: false, /* Important line */
+              presets: [
+                [ "@babel/env",{useBuiltIns:false}],
+                "@babel/react",
+                "@babel/flow"
+              ],
+              plugins: [
+                "@babel/plugin-proposal-export-default-from",
+                "@babel/plugin-syntax-dynamic-import",
+                "universal-import",
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-object-rest-spread",
+                ["@babel/plugin-transform-runtime", {
+                  helpers: false,
+                  polyfill: false,
+                  regenerator: true
+                }]
+              ]
+            },
+            babelCore: "@babel/core" // needed for Babel v7
+          }
+        }
+      },
+      {
+        test: /(\.jsx?|\.tsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            extends: path.resolve(__dirname, '../.babelrcdev'),
-            babelrc: false
-          }
+          options: preset.options
         }
       },
       {
@@ -45,8 +97,8 @@ module.exports = {
         exclude: /node_modules/,
         use: ExtractCssChunks.extract({
           use: [
-            {loader: 'cache-loader'},
-            {loader: 'thread-loader', options: {workers: 4}},
+            { loader: 'cache-loader' },
+            { loader: 'thread-loader', options: { workers: 4 } },
             {
               loader: 'css-loader',
               options: {
@@ -87,7 +139,7 @@ module.exports = {
             name: '[path][name].[hash:8].[ext]'
           }
         }
-        
+
       }
     ]
   }, /*
@@ -124,7 +176,7 @@ module.exports = {
     minimize: false
   },*/
   resolve: {
-    extensions: ['.mjs', '.js', '.jsx', '.css', '.scss'],
+    extensions: ['.mjs', '.ts','.tsx', '.js', '.jsx', '.css', '.scss'],
     alias: {
       'rfx-link': path.resolve(__dirname, '../lib/Link'),
       'rfx': path.resolve(__dirname, '../lib'),
@@ -137,15 +189,15 @@ module.exports = {
       filename: '[name].js',
       minChunks: Infinity
     }),*/
-    
-    
+
+
     // new webpack.NoEmitOnErrorsPlugin(),
     new ExtractCssChunks(),
     new AutoDllPlugin({
       sourceMap: false,
       context: path.join(__dirname, '..'),
       filename: '[name].js',
-      config: {plugins: []}, inherit: true,
+      config: { plugins: [] }, inherit: true,
       entry: {
         vendors: [
           'react',
@@ -165,9 +217,9 @@ module.exports = {
           "apollo-link-ws",
           "apollo-link-http",
           "apollo-link-http-common",
-          'apollo-utilities',
-        //  'rfx',
-        //  "rfx-link"
+          'apollo-utilities'
+          //  'rfx',
+          //  "rfx-link"
           //  path.resolve(__dirname, '../lib')
           //  'rfx',
           //  "rfx-link",
@@ -177,7 +229,7 @@ module.exports = {
         ]
       }
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin()
     // new WriteFilePlugin(), // used so you can see what chunks are produced in dev
   ]
 }

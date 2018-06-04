@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+//import { connect } from 'react-redux'
 import Player from '../components/Player'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -55,6 +55,11 @@ const mapState = state => state.videosHash[state.slug] || {}
 
 const FEED_QUERY = gql`
   query FeedQuery {
+    state @client {
+      language @client {
+        locale
+        }
+      }
     feed {
       links {
         id
@@ -66,7 +71,14 @@ const FEED_QUERY = gql`
   }`;
 
 
-export default connect(mapState)(graphql(FEED_QUERY, {
-  name: 'feedQuery'
-})(Video))
+//export default connect(mapState)(
+  
+export default graphql(FEED_QUERY, 
+  {
+    props: ({data: {loading, error, state,...other}}) => {
+      console.log("FEED_QUERY",state,other)
+return {
+
+}}
+  })(Video)
 

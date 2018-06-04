@@ -12,26 +12,26 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   zh: {
     id: 'app.containers.Layout.LocaleToggle.zh',
-    defaultMessage: '中文',
+    defaultMessage: '中文'
   },
   en: {
     id: 'app.containers.Layout.LocaleToggle.en',
-    defaultMessage: 'English',
+    defaultMessage: 'English'
   },
   fr: {
     id: 'app.containers.Layout.LocaleToggle.fr',
-    defaultMessage: 'French',
+    defaultMessage: 'French'
   },
   pt: {
     id: 'app.containers.Layout.LocaleToggle.pt',
-    defaultMessage: 'Portuguese',
+    defaultMessage: 'Portuguese'
   },
   ru: {
     id: 'app.containers.Layout.LocaleToggle.ru',
-    defaultMessage: 'Russian',
+    defaultMessage: 'Russian'
   },
   uk: {
     id: 'app.containers.Layout.LocaleToggle.uk',
-    defaultMessage: 'Ukrainian',
+    defaultMessage: 'Ukrainian'
   }
 });

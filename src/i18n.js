@@ -7,12 +7,21 @@
 import { addLocaleData } from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
 import zhLocaleData from 'react-intl/locale-data/zh';
+import ptLocaleData from 'react-intl/locale-data/pt';
+import ruLocaleData from 'react-intl/locale-data/ru';
+import frLocaleData from 'react-intl/locale-data/fr';
 
 import enTranslationMessages from './i18n/en.json';
 import zhTranslationMessages from './i18n/zh.json';
+import ruTranslationMessages from './i18n/en.json';
+import ptTranslationMessages from './i18n/en.json';
+import frTranslationMessages from './i18n/en.json';
 
 addLocaleData(enLocaleData);
 addLocaleData(zhLocaleData);
+addLocaleData(ruLocaleData);
+addLocaleData(ptLocaleData);
+addLocaleData(frLocaleData);
 
 export const DEFAULT_LOCALE = 'en';
 

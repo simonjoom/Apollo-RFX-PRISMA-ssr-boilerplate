@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import { renderToNodeStream } from 'react-dom/server';
-import { Provider } from 'react-redux'
+//import { Provider } from 'react-redux'
 import { flushChunkNames, clearChunks } from 'react-universal-component/server'
 import flushChunks from 'webpack-flush-chunks'
-import { ReduxCache } from 'apollo-cache-redux';
 import configureStore from './configureStore'
 import initApollo from '../initApollo'
 import App from '../src/components/App'
@@ -12,7 +11,11 @@ import { ApolloProvider, getDataFromTree } from 'react-apollo'
 
 const DEV = process.env.NODE_ENV === 'development';
 function wrapAsync(fn) {
-  if (DEV) {
+  var debug = typeof v8debug === 'object' || /--debug|--inspect/.test(process.execArgv.join(' '));
+  //just to inform there is a problem in serverside!
+
+  if (DEV && !debug) {
+
     return function (req, res, next) {
       // Make sure to `.catch()` any errors and pass them along to the `next()`
       // middleware in the chain, in this case the error handler.
@@ -24,38 +27,39 @@ function wrapAsync(fn) {
 }
 
 export default ({ clientStats, serverStats }) => wrapAsync(async (req, res) => {
-  const { store, client } = await configureStore(req, res)
-  // } catch (e) {
-  //   return next('Unexpected error occurred', e);
-  // }
-  if (!store) return // no store means redirect was already served
+  try {
+    const { store, client } = await configureStore(req, res)
+    console.log("isstore", store)
+    if (!store) return // no store means redirect was already served
+ 
 
-  // let client = initApollo();
+    const isDev = process.env.NODE_ENV === 'development';
 
-  const isDev = process.env.NODE_ENV === 'development';
-  const myApp = createApp(App, client, store)
+    const serverState = store.getState();
+    let storeApollo = JSON.parse(JSON.stringify({ state: serverState }));
+    const test = await client.saveStore(storeApollo)
 
-  getDataFromTree(myApp).then(() => {
-    const appString = ReactDOM.renderToString(myApp, (err, html) => {
-      if (err) {
-        console.error('Error in renderToString:', err);
-        return res.status(500).send('Internal Server Error');
-      }
-      console.log("sendres")
-      res.send(html);
-    });
+    const myApp = createApp(App, client, store);
+    let appString;
+    try {
+      await getDataFromTree(myApp).then(() => {
+        appString = ReactDOM.renderToString(myApp, (err, html) => {
+          if (err) {
+            console.error('Error in renderToString:', err);
+            return res.status(500).send('Internal Server Error');
+          }
+          console.log("sendres")
+          res.send(html);
+        });
+      })
+    } catch (error) {
+      console.log("appolo_getDataFromTree", error)
+    } 
+    
+    let serverState2 = client.cache.extract()
 
-    const state = store.getState();
-    let serverState = Object.assign(
-      state
-      // {apollo: {data: client.cache.extract()}}
-    );
+     const stateJson = JSON.stringify(serverState) 
 
-    let serverState2 = client.cache.extract();
-
-    console.log("initialStateapp", serverState)
-
-    const stateJson = JSON.stringify(serverState)
     const stateJson2 = JSON.stringify(serverState2)
     //clearChunks()
 
@@ -81,12 +85,12 @@ export default ({ clientStats, serverStats }) => wrapAsync(async (req, res) => {
       <html>
         <head>
           <meta charset="utf-8">
-          <title>${state.title}</title>
+          <title>${serverState.title}</title>
           <link charset="utf-8" type="text/css" rel="stylesheet" href="/staticssr/vendor.css">
           ${styles}
         </head>
         <body>
-          <script>window.REDUX_STATE = ${stateJson};window.__APOLLO_STATE__ = ${stateJson2}</script>
+          <script>window.__APOLLO_STATE__ = ${stateJson2}</script>
           <div id="root">${appString}</div>
           ${cssHash}
           ${runtime}
@@ -95,14 +99,10 @@ export default ({ clientStats, serverStats }) => wrapAsync(async (req, res) => {
         </body>
       </html>`)
     return res.end();
-  })
+  } catch (error) {
+    console.log("ssr_render", error)
+  }
 })
 
-const createApp = (App, client, store) => (
-  <Provider store={store}>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </Provider>
-)
+const createApp = (App, client, store) => (<ApolloProvider client={client}><App /></ApolloProvider>)
 

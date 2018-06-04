@@ -1,3 +1,5 @@
+//@flow
+
 import React, { Component } from 'react'
 import { AUTH_TOKEN } from '../../constants'
 import PropTypes from 'prop-types';
@@ -91,7 +93,6 @@ class Login extends Component {
   
   constructor(props: Object, context: Object) {
     super(props, context);
-    console.log("Logincontext", context)
   }
   
   handleChange = prop => event => {
@@ -101,7 +102,6 @@ class Login extends Component {
   handleRequestClose = () => this.setState({openMenu: false});
   
   render() {
-    console.log("Logincontext", this.context, this.props.context)
     return (
       <div>
         <Button onClick={this.toggleDrawer('left', true)}>Open Left</Button>

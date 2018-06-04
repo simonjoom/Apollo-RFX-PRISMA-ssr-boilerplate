@@ -6,13 +6,15 @@
  * IntlProvider component and i18n messages (loaded from `app/translations`)
  */
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
-import { IntlProvider } from 'react-intl';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+//import { connect } from 'react-redux';
+import { createSelector } from 'reselect'
+import { IntlProvider } from 'react-intl'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import { makeSelectLocale } from './selectors';
+import { makeSelectLocale } from './selectors'
 
 export class LanguageProvider extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -25,18 +27,44 @@ export class LanguageProvider extends PureComponent {
       >
         {React.Children.only(this.props.children)}
       </IntlProvider>
-    );
+    )
   }
 }
 
 LanguageProvider.propTypes = {
   locale: PropTypes.string,
   messages: PropTypes.object,
-  children: PropTypes.element.isRequired,
-};
+  children: PropTypes.element.isRequired
+}
 
-const mapStateToProps = createSelector(makeSelectLocale(), locale => ({
+/*const mapStateToProps = createSelector(makeSelectLocale(), locale => ({
   locale,
-}));
+}));*/
+const GET_LANG = gql`
+  query getLang {
+    state {
+    language @client {
+      locale
+          }
+    }
+  }
+`
 
-export default connect(mapStateToProps)(LanguageProvider);
+
+const WrappedLang = graphql(GET_LANG, {
+  props: ({ loading, error, data: { state: { language: { locale } } } }) => {
+    if (loading) {
+      return { loading }
+    }
+    if (error) {
+      return { error }
+    }
+    return {
+      loading: false,
+      locale
+    }
+  }
+})(LanguageProvider)
+
+export default WrappedLang
+// export default connect(mapStateToProps)(LanguageProvider);
