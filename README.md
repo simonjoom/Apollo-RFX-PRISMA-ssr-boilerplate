@@ -9,13 +9,14 @@ Apollo-RFX-PRISMA
     1. [This boilerplate have got a fully support for SVG so you need to install it](#this-boilerplate-have-got-a-fully-support-for-svg-so-you-need-to-install-it)
   5. [ROADMAP](#roadmap)
   6. [How-to integrate Apollo 2.0 in the Redux-FLow for a Universal Application](#how-to-integrate-apollo-20-in-the-redux-flow-for-a-universal-application)
+    1. [Apollo 2 has got his own 'mapStateToProps'](#apollo-2-has-got-his-own-mapstatetoprops)
   7. [We use for faster build:](#we-use-for-faster-build)
   8. [Files You Should Look At:](#files-you-should-look-at)
 
 ## README
 Before to start this project is not stable, the reaction link of rfx are buggy for now. we are waiting, the final version coming soon.
 
-I propose just to share this code , because this HOW-TO can help people to work with **Apollo2** and the redux state together.
+We propose just to share one implementation , because this HOW-TO can help people to work with **Apollo2** and the redux state together.
 
 ## Inside
 - ***Apollo 2.0*** with ***Prisma*** already setup (no need to make a prisma deploy or a prisma init the server take care)
@@ -112,7 +113,7 @@ https://github.com/smooth-code/svgr
 ## ROADMAP
 The repo is well tested in Developpment mode only first
 
-I really need a good developper with PRISMA or graphql to work on:
+We really need a good developper with PRISMA or graphql to work on:
 - Test and optimization our redux-apollo implementation
 - Login user for facebook and others
 - Tchat implementation Backend
@@ -161,10 +162,10 @@ all connection to redux (connect) and add a Apollo2 Version (with **Query** by e
 
 Yes i could keep it but i really think that it's better to work only with Apollo2 for this. (and to not mix everythings)
 
-Apollo 2 has got his own 'mapProptoState' 
+### Apollo 2 has got his own 'mapStateToProps'
 
-I created a Apollo-store with his apollo-cache-inmemory from a redux store json  
-i Use 2 utility function to add typename in the var store else apollo-cache-inmemory is complaining for his working process to not see them:
+We created a Apollo-store with his apollo-cache-inmemory from a redux store json  
+We Use 2 utility function to add typename in the var store else apollo-cache-inmemory is complaining for his working process to not see them:
 
 [***initApollo.js***](./initApollo.js) :
 ```Markdown 
@@ -178,7 +179,7 @@ i Use 2 utility function to add typename in the var store else apollo-cache-inme
 ```
 To conclude:
 
-At the end i have got something working great with only;
+At the end We have got something working great with only;
 
 ``` 
 <ApolloProvider client={client}>
