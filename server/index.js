@@ -7,7 +7,7 @@ import { AUTH_TOKEN, PORTAPI, PORT } from './constants'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
-import { findVideos, findVideo } from './api'
+//import { findVideos, findVideo } from './api'
 import { GraphQLServer } from 'graphql-yoga'
 
 const chalk = require('chalk');
@@ -68,13 +68,15 @@ const jwToken = null
 const app = express()
 app.get('/api/videos/:category', async (req, res) => {
   // const jwToken = req.headers.authorization.split(' ')[1]
-  const data = await findVideos(req.params.category, jwToken)
+  //const data = await findVideos(req.params.category, jwToken)
+  const data={category:"test"}
   res.json(data)
 })
 
 app.get('/api/video/:slug', async (req, res) => {
   // const jwToken = req.headers.authorization.split(' ')[1]
-  const data = await findVideo(req.params.slug, jwToken)
+  //const data = await findVideo(req.params.slug, jwToken)
+  const data={category:"test"}
   res.json(data)
 })
 const options = {

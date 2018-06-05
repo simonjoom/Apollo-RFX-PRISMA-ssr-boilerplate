@@ -51,6 +51,7 @@ const GET_LISTVIDEO = gql`
 
 const WrappedListVideo = graphql(GET_LISTVIDEO, {
   props: ({ loading, error, data: { state: { category, videosByCategory, videosHash } } }) => {
+    console.log("WrappedListVideo",category, videosByCategory, videosHash)
     if (loading) {
       return { loading }
     }

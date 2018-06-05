@@ -67,8 +67,8 @@ type Payload {
 }
 
 type State {
+  title : String
   location: LocationState
-  direction: String
   language : Language
   payload : Payload
   query : Object
@@ -80,7 +80,6 @@ type State {
   packages: [String]
   videosByCategory:Object
   videosHash:Object
-  title : String
 }
 
 type Language {
@@ -88,37 +87,34 @@ type Language {
 }
 
 type LocationState {
+  kind: String
+  direction: String
+  blocked: String
   basename:String
   hash:String
   key:String
-  url: String
   pathname: String
   entries: [Location!]
   type: String
   from: String
-  blocked: String
   ready: Boolean
   error: String
   payload: Payload
   query: Object
   search: String
   prev: Location
-  kind: String
   universal: Boolean 
+  url: String
 }
 
 type Location {
-  url: String
-  pathname : String
-  type : String
-  payload : Payload
-  query : Object
-  params: Object
-  query: Object
-  state: Object
   hash: String
   basename: String
   location: LocSmall
+  query : Object
+  params: Object
+  state: Object
+  type : String
 }
 
 type LocSmall {
@@ -139,7 +135,7 @@ type Query {
 }
 
 type Mutation{
-  storeState(store: Store!) : Store
+  store(store: Store!) : Store
   updateNetworkStatus(isConnected: Boolean!) : Boolean
   setLocale(locale: String!): String
 }
@@ -147,6 +143,10 @@ type Mutation{
 `
 /*
 
+  url: String
+  pathname : String
+  payload : Payload
+  query: Object
   state(type: String!) : State
 
 const schema = makeExecutableSchema({
@@ -170,6 +170,7 @@ const FETCH_STORE = gql`
           entries
           kind
           universal 
+          url 
       }
       language {
         locale
@@ -204,16 +205,26 @@ const removeObjType = function (object) {
     if (object[key] && typeof key !== 'number' && typeof object[key] === 'object') // if the content id is simila
     {
       delete object[key].__typename
-      addObjType(object[key])
+      removeObjType(object[key])
     }
   })
 }
-const addObjType = function (object) {
+let tree = []
+const addObjType = function (object, mytree = tree) {
   Object.keys(object).forEach(key => {
     if (object[key] && typeof key !== 'number' && typeof object[key] === 'object') // if the content id is simila
     {
+
       object[key].__typename = capitalizeFirstLetter(key)
-      addObjType(object[key])
+      if (mytree.length > 0) {
+        if (key == "location" && mytree.length == 1)
+          object[key].__typename = "LocationState";
+        if (key == "location" && mytree.length == 2)
+          object[key].__typename = "LocSmall";
+      }
+
+      mytree.push(key)
+      addObjType(object[key], mytree)
     }
   })
 }
@@ -221,12 +232,12 @@ const addObjType = function (object) {
 let client
 const resolvers = {
   Mutation: {
-    setLocale: (_, { locale }, { cache }) => { 
+    setLocale: (_, { locale }, { cache }) => {
       const databef = Object.assign({}, cache.readQuery({ query: FETCH_STORE })).state
       databef.language.locale = locale
       cache.writeQuery({ query: FETCH_STORE, data: { state: databef } })
     },
-    storeState: (_, { store }, { cache }) => {
+    store: (_, { store }, { cache }) => {
       const { state } = store
       console.log('storeStatebefore', state)
       /*
@@ -246,7 +257,7 @@ const resolvers = {
               }]
             }*/
       cache.writeQuery({ query: FETCH_STORE, data: { state } })
-      return state
+      return store
     },
     updateNetworkStatus: (_, { isConnected }, { cache }) => {
       cache.writeData({ data: { isConnected } })
@@ -264,7 +275,7 @@ const isSub = ({ query }) => {
 
 
 function create(link, logger, history) {
-  
+
 
 
   //  TODO or not TODO?
@@ -335,17 +346,19 @@ function create(link, logger, history) {
 
 
   client.saveStore = store => {
+    tree = [];
     addObjType(store)
+
     console.log('dispatchstate', store)
-    
+
     //some init to prevent apollo cache not complaining missing fields.
 
     if (!store.state.location.payload)
       store.state.location.payload = {}
     if (!store.state.location.pathname)
       store.state.location.pathname = ''
-      if (!store.state.location.kind)
-        store.state.location.kind = ''
+    if (!store.state.location.kind)
+      store.state.location.kind = ''
     if (!store.state.location.search)
       store.state.location.search = ''
     if (!store.state.location.prev)
@@ -356,8 +369,8 @@ function create(link, logger, history) {
 
     return client.mutate({
       mutation: gql`
-          mutation storeState($store:Store) {
-            storeState(store:$store) @client
+          mutation store($store:Store) {
+            store(store:$store) @client
           }
         `,
       variables: {

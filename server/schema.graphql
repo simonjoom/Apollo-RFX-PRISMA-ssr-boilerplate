@@ -1,7 +1,24 @@
 # import Link, Vote, LinkSubscriptionPayload, VoteSubscriptionPayload from "./generated/prisma.graphql"
 
+type Videos {
+  items: [Video!]!
+}
+
+type Video {
+    youtubeId: String!,
+    slug: String!,
+    title: String!,
+    by: String!,
+    category: String!,
+    color: String!,
+    tip: String!
+} 
+
 type Query {
   feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
+  findVideos: Videos!
+  findVideo: Videos!
+  allVideos:Videos!
 }
 
 type Feed {

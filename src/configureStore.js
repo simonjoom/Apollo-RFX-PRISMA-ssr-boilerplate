@@ -3,6 +3,7 @@ import { applyMiddleware, compose, combineReducers } from 'redux'
 //import { apolloReducer } from 'apollo-cache-redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { createRouter, createHistory } from 'rfx/core'
+import { transform, isEqual, isObject } from 'lodash';
 import {
   formatRoutes
 } from 'rfx/utils'
@@ -50,7 +51,10 @@ function createStore(reducer, preloadedState, client, enhancer) {
       throw new Error('Expected the enhancer to be a function.')
     }
 
-    return enhancer(createStore)(reducer, preloadedState, client)
+    const finalStore=enhancer(createStore)(reducer, preloadedState, client);
+    if (client)
+    client.dispatch = finalStore.dispatch;
+    return finalStore;
   }
 
   if (typeof reducer !== 'function') {
@@ -73,6 +77,13 @@ function createStore(reducer, preloadedState, client, enhancer) {
     }
     //console.log("getState", currentState)
     return firstdispatchdone ? client.getState() : currentState
+  }
+  function difference(object, base) {
+    return transform(object, (result, value, key) => {
+      if (!isEqual(value, base[key])) {
+        result[key] = isObject(value) && isObject(base[key]) ? difference(value, base[key]) : value;
+      }
+    });
   }
 
 
@@ -97,9 +108,13 @@ function createStore(reducer, preloadedState, client, enhancer) {
 
     try {
       isDispatching = true
+      let oldstate=currentState;
       currentState = currentReducer(currentState, action)
       if (client && action.type != ActionTypes.INIT) {
         console.log("dispatch", action, currentState)
+
+        console.log("difftest",difference(oldstate, currentState))
+
 
         let storeApollo = JSON.parse(JSON.stringify({ state: currentState }))
         client.saveStore(storeApollo)
@@ -116,8 +131,7 @@ function createStore(reducer, preloadedState, client, enhancer) {
   // reducer returns their initial state. This effectively populates
   // the initial state tree.
   dispatch({ type: ActionTypes.INIT })
-  if (client)
-    client.dispatch = dispatch;
+
   return {
     dispatch,
     getState
@@ -169,7 +183,7 @@ export default (preloadedState, initialEntries) => {
       })
     }
   } 
-  
+
   if (typeof window !== 'undefined') {
     window.routes = routesdef
     window.store = store

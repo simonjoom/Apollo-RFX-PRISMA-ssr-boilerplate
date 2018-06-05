@@ -65,6 +65,7 @@ export default {
   VIDEOLIST: {
     path: '/videos/:category',
     thunk: async ({action, getState, params}) => {
+      console.log("actionVIDEO", action,params);
       const {category} = params
       //const { jwToken } = getState()
       const videos = await fetchData(`/api/videos/${category}`, jwToken)
