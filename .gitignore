@@ -77,3 +77,4 @@ buildServer/
 .git/
 node_modules/
 public/
+awesome-typescript-loader-master/

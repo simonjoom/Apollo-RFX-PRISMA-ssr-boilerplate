@@ -1,7 +1,7 @@
 {
   "name": "apollo-rfx-prisma-ssr-boilerplate",
   "description": "materialui and ssr with responsive support with the magical couple webpack4-RFX-PRISMA",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "engines": {
     "vscode": "^1.8.0"
   },
@@ -10,7 +10,7 @@
     "url": "https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate.git"
   },
   "main": "server/index.js",
-  "author": "Simon <simon@skiscool.com>",
+  "author": "Simon <simon@skiscool.com> ",
   "license": "MIT",
   "scripts": {
     "start": "npm run clean && cross-env NODE_ENV=development ./babel-watch/babel-watch.js server/index.js",

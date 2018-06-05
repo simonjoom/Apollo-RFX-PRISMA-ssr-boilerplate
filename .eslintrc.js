@@ -67,7 +67,6 @@ module.exports = {
     'react/jsx-indent': 1,
     'dot-notation': 1,
     'import/no-named-default': 1,
-    'no-unused-vars': 1,
     'flowtype/no-weak-types': 1,
     'consistent-return': 0,
     'import/prefer-default-export': 1,
