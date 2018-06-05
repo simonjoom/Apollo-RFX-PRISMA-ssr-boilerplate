@@ -1,0 +1,21 @@
+{
+  "presets": [
+      "@babel/preset-typescript",
+      "@babel/preset-flow",
+    "@babel/preset-react",
+    ["@babel/preset-env",{
+        "debug": true}]
+  ],
+  "plugins": [
+  "@babel/plugin-proposal-export-default-from",
+  "@babel/plugin-syntax-dynamic-import",
+    "universal-import",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    ["@babel/plugin-transform-runtime",{
+      helpers: false,
+      polyfill: false,
+      regenerator: true
+    }]
+  ]
+}
