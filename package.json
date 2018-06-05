@@ -5,6 +5,10 @@
   "engines": {
     "vscode": "^1.8.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate.git"
+  },
   "main": "server/index.js",
   "author": "Simon <simon@skiscool.com>",
   "license": "MIT",
