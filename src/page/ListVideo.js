@@ -8,8 +8,8 @@ import styles from '../css/List'
 
 const ListVideo = ({ videos }) =>
   (<div className={styles.list}>
-    {videos.map((video, key) => <Row {...video} key={key} />)}
-  </div>)
+    {videos.map(video => <Row {...video} key={video.youtubeId} />)}
+   </div>)
 
 const Row = ({
   slug, title, youtubeId, by, color
@@ -26,7 +26,7 @@ const Row = ({
 
     <div className={styles.gradient} />
     <span className={styles.by}>by: {by}</span>
-  </Link>)
+   </Link>)
 
 const youtubeBackground = youtubeId =>
   `url(https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg)`
@@ -51,7 +51,7 @@ const GET_LISTVIDEO = gql`
 
 const WrappedListVideo = graphql(GET_LISTVIDEO, {
   props: ({ loading, error, data: { state: { category, videosByCategory, videosHash } } }) => {
-    console.log("WrappedListVideo",category, videosByCategory, videosHash)
+    // console.log("WrappedListVideo", category, videosByCategory, videosHash)
     if (loading) {
       return { loading }
     }
@@ -62,7 +62,7 @@ const WrappedListVideo = graphql(GET_LISTVIDEO, {
     const videos = slugs.map(slug => videosHash[slug])
     return { loading: false, videos }
   }
-})(ListVideo);
+})(ListVideo)
 
 export default WrappedListVideo
 // export default connect(mapState)(ListVideo)
