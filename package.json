@@ -153,7 +153,7 @@
     "linters": {
       "*.js": [
         "prettier --single-quote --semi=false --write",
-        "../node_modules/.bin/eslint --fix",
+       // "../node_modules/.bin/eslint --fix",
         "git add"
       ]
     }
