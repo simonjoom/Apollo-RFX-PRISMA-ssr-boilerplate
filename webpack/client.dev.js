@@ -1,28 +1,28 @@
 const path = require('path')
 const webpack = require('webpack')
-const AutoDllPlugin = require("../autodll-webpack-plugin-webpack-4")
+const AutoDllPlugin = require('../autodll-webpack-plugin-webpack-4')
 const ExtractCssChunks = require('../extract-css-chunks-webpack-plugin')
 const StatsPlugin = require('stats-webpack-plugin')
 const loadPartialConfig = require('@babel/core').loadPartialConfig
 
-let preset = loadPartialConfig({
+const preset = loadPartialConfig({
   presets: [
-   [require('@babel/preset-env'), { useBuiltIns: false,modules:"commonjs", debug: true }],
-   require('@babel/preset-react'),
-   require('@babel/preset-flow')
- ],
- plugins: [
-   require('@babel/plugin-proposal-export-default-from'),
-   require('@babel/plugin-syntax-dynamic-import'),
-   require('babel-plugin-universal-import'),
-   require('@babel/plugin-proposal-class-properties'),
-   [require('@babel/plugin-transform-runtime'), {
-     helpers: false,
-     polyfill: false,
-     regenerator: true
-   }]
- ] 
- })
+    [require('@babel/preset-env'), { useBuiltIns: false, modules: 'commonjs', debug: true }],
+    require('@babel/preset-react'),
+    require('@babel/preset-flow')
+  ],
+  plugins: [
+    require('@babel/plugin-proposal-export-default-from'),
+    require('@babel/plugin-syntax-dynamic-import'),
+    require('babel-plugin-universal-import'),
+    require('@babel/plugin-proposal-class-properties'),
+    [require('@babel/plugin-transform-runtime'), {
+      helpers: false,
+      polyfill: false,
+      regenerator: true
+    }]
+  ]
+})
 
 preset.options.cacheDirectory = true
 preset.options.sourceMap = true
@@ -34,9 +34,9 @@ module.exports = {
   name: 'client',
   target: 'web',
   devtool: 'source-map',
-  //devtool: "cheap-module-source-map",
+  // devtool: "cheap-module-source-map",
   entry: {
-    main: ['@babel/polyfill', "./extract-css-chunks-webpack-plugin/hotModuleReplacement2",
+    main: ['./extract-css-chunks-webpack-plugin/hotModuleReplacement2',
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
       path.resolve(__dirname, '../src/index.jsx')]
   },
@@ -52,10 +52,15 @@ module.exports = {
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: "javascript/auto"
+        type: 'javascript/auto'
       },
       {
-        test: /\.rsx?$/,
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        include: [
+          path.resolve(__dirname, '../server'),
+          path.resolve(__dirname, '../server/src')
+        ],
         use: {
           loader: 'awesome-typescript-loader',
           options: {
@@ -63,11 +68,9 @@ module.exports = {
             babelOptions: {
               babelrc: false, /* Important line */
               presets: [
-                [ "@babel/env",{useBuiltIns:false}],
-                "@babel/react",
-                "@babel/flow"
-              ],
-              plugins: [
+                [require('@babel/preset-env'), { useBuiltIns: false, modules: 'commonjs', debug: true }]
+              ]
+              /* ,plugins: [
                 "@babel/plugin-proposal-export-default-from",
                 "@babel/plugin-syntax-dynamic-import",
                 "universal-import",
@@ -78,14 +81,14 @@ module.exports = {
                   polyfill: false,
                   regenerator: true
                 }]
-              ]
+              ]*/
             },
-            babelCore: "@babel/core" // needed for Babel v7
+            babelCore: '@babel/core' // needed for Babel v7
           }
         }
       },
       {
-        test: /(\.jsx?|\.tsx?)$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -102,8 +105,8 @@ module.exports = {
             {
               loader: 'css-loader',
               options: {
-                //sourceMap: false,
-                //sourceMap: true,  <--- give output error for a normal import on page
+                // sourceMap: false,
+                // sourceMap: true,  <--- give output error for a normal import on page
                 modules: true,
                 localIdentName: '[name]__[local]--[hash:base64:5]'
               }
@@ -128,7 +131,7 @@ module.exports = {
               name: '[path][name].[hash:8].[ext]'
             }
           }
-        ],
+        ]
       },
       {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -150,7 +153,7 @@ module.exports = {
      namedChunks:false,
      sideEffects:true,
      usedExports:true,
-    
+
     //concatenateModules: true,
     //mergeDuplicateChunks: true,
     runtimeChunk: true,
@@ -176,15 +179,15 @@ module.exports = {
     minimize: false
   },*/
   resolve: {
-    extensions: ['.mjs', '.ts','.tsx', '.js', '.jsx', '.css', '.scss'],
+    extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx', '.css', '.scss'],
     alias: {
       'rfx-link': path.resolve(__dirname, '../lib/Link'),
-      'rfx': path.resolve(__dirname, '../lib'),
+      rfx: path.resolve(__dirname, '../lib')
     }
   },
   plugins: [
     new StatsPlugin('stats.json'),
-    /*new webpack.optimize.CommonsChunkPlugin({
+    /* new webpack.optimize.CommonsChunkPlugin({
       names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
       filename: '[name].js',
       minChunks: Infinity
@@ -197,7 +200,8 @@ module.exports = {
       sourceMap: false,
       context: path.join(__dirname, '..'),
       filename: '[name].js',
-      config: { plugins: [] }, inherit: true,
+      config: { plugins: [] },
+inherit: true,
       entry: {
         vendors: [
           'react',
@@ -206,17 +210,17 @@ module.exports = {
           'react-redux',
           'react-intl',
           'graphql',
-          "graphql-yoga",
-          "apollo-link",
-          "apollo-client",
-          "apollo-cache",
-          "apollo-cache-inmemory",
-          "apollo-boost",
-          "svgr",
-          "apollo-link-state",
-          "apollo-link-ws",
-          "apollo-link-http",
-          "apollo-link-http-common",
+          'graphql-yoga',
+          'apollo-link',
+          'apollo-client',
+          'apollo-cache',
+          'apollo-cache-inmemory',
+          'apollo-boost',
+          'svgr',
+          'apollo-link-state',
+          'apollo-link-ws',
+          'apollo-link-http',
+          'apollo-link-http-common',
           'apollo-utilities'
           //  'rfx',
           //  "rfx-link"

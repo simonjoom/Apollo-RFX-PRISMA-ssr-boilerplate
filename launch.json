@@ -14,7 +14,7 @@
                 "run-script",
                 "test"
             ],
-            "port": 9229
+            "port":5858
         }
     ]
 }

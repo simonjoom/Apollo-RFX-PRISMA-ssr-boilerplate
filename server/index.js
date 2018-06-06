@@ -8,10 +8,11 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 //import { findVideos, findVideo } from './api'
-import { GraphQLServer } from 'graphql-yoga'
+//import { GraphQLServer } from 'graphql-yoga'
 
+import QLServer, { options } from "./src/index.ts"
 const chalk = require('chalk');
-
+/*
 const { Prisma } = require('prisma-binding')
 const Query = require('./resolvers/Query')
 const Mutation = require('./resolvers/Mutation')
@@ -26,35 +27,20 @@ const resolvers = {
   Subscription,
   Feed
 }
-// ... or using `require()`
-// const { GraphQLServer } = require('graphql-yoga')
-/*
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`
+*/
 
-const resolvers = {
-  Query: {
-    hello: (_, {name}) => `Hello ${name || 'World'}`,
-  },
-}*/
-
-// import clientConfig from '../webpack/client.dev'
-// import serverConfig from '../webpack/server.dev'
-
+options.port = PORTAPI;
 const DEV = process.env.NODE_ENV === 'development'
 
 let clientConfig
-let serverConfig, 
-formatWebpackMessages
+let serverConfig,
+  formatWebpackMessages
 if (DEV) {
   clientConfig = require('../webpack/client.dev')
   serverConfig = require('../webpack/server.dev')
   formatWebpackMessages = require('./formatmessage')
 }
- else {
+else {
   clientConfig = require('../webpack/client.prod')
   serverConfig = require('../webpack/server.prod')
 }
@@ -69,16 +55,17 @@ const app = express()
 app.get('/api/videos/:category', async (req, res) => {
   // const jwToken = req.headers.authorization.split(' ')[1]
   //const data = await findVideos(req.params.category, jwToken)
-  const data={category:"test"}
+  const data = { category: "test" }
   res.json(data)
 })
 
 app.get('/api/video/:slug', async (req, res) => {
   // const jwToken = req.headers.authorization.split(' ')[1]
   //const data = await findVideo(req.params.slug, jwToken)
-  const data={category:"test"}
+  const data = { category: "test" }
   res.json(data)
 })
+/*
 const options = {
   port: PORTAPI,
   debug: true,
@@ -100,7 +87,7 @@ const QLServer = new GraphQLServer({
       // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
     })
   })
-})
+})*/
 
 if (DEV) {
   console.log('run')
@@ -123,13 +110,11 @@ if (DEV) {
     app.use(hotMiddleware)
 
     app.use('/staticssr', express.static(serverConfig.output.path))
-    app.use(
-      // keeps serverRender updated with arg: { clientStats, outputPath }
-      webpackHotServerMiddleware(multiCompiler, {
+    app.use(webpackHotServerMiddleware(multiCompiler, {
         serverRendererOptions: { outputPath: clientConfig.output.path }
       }))
   }
- catch (err) {
+  catch (err) {
     isFirstCompile = true
     console.log(chalk.red('Failed to compile.'))
     console.log()
@@ -180,24 +165,25 @@ if (DEV) {
       console.log(messages.warnings.join('\n\n'))
 
       // Teach some ESLint tricks.
-      console.log(`\nSearch for the ${ 
-        chalk.underline(chalk.yellow('keywords')) 
+      console.log(`\nSearch for the ${
+        chalk.underline(chalk.yellow('keywords'))
         } to learn more about each warning.`)
-      console.log(`To ignore, add ${ 
-        chalk.cyan('// eslint-disable-next-line') 
+      console.log(`To ignore, add ${
+        chalk.cyan('// eslint-disable-next-line')
         } to the line before.\n`)
     }
   })
 
   var debug = typeof v8debug === 'object' || /--debug|--inspect/.test(process.execArgv.join(' '))
   //just to inform there is a problem in serverside!
-  if (!debug)
-    {app.use(function (error, req, res, next) {
+  if (!debug) {
+    app.use(function (error, req, res, next) {
       // Gets called because of `wrapAsync()`
       res.json({ message: error.message });
-    })}
+    })
+  }
 }
- else {
+else {
   const serverRender = require('../buildServer/main.js').default // eslint-disable-line import/no-unresolved
 
   const clientStats = require('../buildClient/stats.json') // eslint-disable-line import/no-unresolved

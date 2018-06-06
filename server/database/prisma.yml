@@ -13,3 +13,12 @@ datamodel: datamodel.graphql
 
 
 endpoint: https://eu1.prisma.sh/public-foamcentaur-934/hackernews-graphql-js/dev
+
+#seed:
+#  import: seed.graphql
+
+
+#hooks:
+#post-deploy:
+# - graphql get-schema -p prisma
+# - graphql codegen

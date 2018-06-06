@@ -1,6 +1,5 @@
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
-import { ReduxCache } from 'apollo-cache-redux'
 import { ApolloLink, split } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -12,7 +11,7 @@ import {
 import { getOperationAST } from 'graphql'
 import { AUTH_TOKEN, PORTAPI } from './constants'
 import gql from 'graphql-tag'
-import ApolloCacheRouter from 'apollo-cache-router'
+//import ApolloCacheRouter from 'apollo-cache-router'
 import { makeExecutableSchema, forEachField } from 'graphql-tools'
 import { onError } from 'apollo-link-error'
 

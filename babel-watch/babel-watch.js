@@ -130,7 +130,7 @@ const watcher = chokidar.watch(program.watch, {
 });
 let watcherInitialized = (program.watch.length === 0);
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
   watcher.close();
   process.exit(1);
 });
@@ -189,7 +189,7 @@ function handleFileLoad(filename, callback) {
       return;
     }
   }
-  if (!shouldIgnore(filename)) {
+  /*if (!shouldIgnore(filename)) {
     compile(filename, (err, result) => {
       if (err) {
         console.error('Babel compilation error', err.stack);
@@ -205,9 +205,9 @@ function handleFileLoad(filename, callback) {
       delete errors[filename];
       callback(result.code, result.map);
     });
-  } else {
-    callback();
-  }
+  } else {*/
+  callback();
+  // }
 }
 
 function killApp() {
@@ -284,12 +284,12 @@ function restartAppInternal() {
     runnerExecArgv.push('--inspect');
   }
   // Support for --debug-brk
-  if(program.debugBrk) {
+  if (program.debugBrk) {
     runnerExecArgv.push('--debug-brk');
   }
 
-    runnerExecArgv.push('--inspect');
-   // runnerExecArgv.push('--inspect-brk=29998');
+  runnerExecArgv.push('--inspect');
+  // runnerExecArgv.push('--inspect-brk=29998');
   const app = fork(path.resolve(__dirname, 'runner.js'), { execArgv: runnerExecArgv });
 
   app.on('message', (data) => {

@@ -5,7 +5,7 @@ const ExtractCssChunks = require('../extract-css-chunks-webpack-plugin')
 const loadPartialConfig = require('@babel/core').loadPartialConfig
 
 const res = p => path.resolve(__dirname, p)
-let preset = loadPartialConfig({
+const preset = loadPartialConfig({
   presets: [
     [require('@babel/preset-env'), { useBuiltIns: false, modules: false, debug: true }],
     require('@babel/preset-react'),
@@ -28,7 +28,6 @@ preset.options.cacheDirectory = true
 preset.options.sourceMap = true
 preset.options.passPerPreset = false
 preset.options.babelrc = false
-
 // if you're specifying externals to leave unbundled, you need to tell Webpack
 // to still bundle `react-universal-component`, `webpack-flush-chunks` and
 // `require-universal-module` so that they know they are running
@@ -50,7 +49,7 @@ module.exports = {
   devtool: 'source-map',
   // devtool: false,
   entry: {
-    main: ['@babel/polyfill', 'fetch-everywhere', res('../server/render.js')],
+    main: ['fetch-everywhere', res('../server/render.js')],
     vendor: [res('../font-awesome.scss'), res('../StyleApp.scss')]
     // vendors: ['fetch-everywhere']
   },
@@ -69,7 +68,29 @@ module.exports = {
         type: 'javascript/auto'
       },
       {
-        test: /(\.jsx?|\.tsx?)$/,
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        include: [
+          path.resolve(__dirname, '../server'),
+          path.resolve(__dirname, '../server/src')
+        ],
+        use: {
+          loader: 'awesome-typescript-loader',
+          options: {
+            configFileName: path.resolve(__dirname, '../server/tsconfig.json'),
+            useBabel: true,
+            babelOptions: {
+              babelrc: false, /* Important line */
+              presets: [
+                [require('@babel/preset-env'), { useBuiltIns: false, modules: false, debug: true }]
+              ]
+            },
+            babelCore: '@babel/core' // needed for Babel v7
+          }
+        }
+      },
+      {
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

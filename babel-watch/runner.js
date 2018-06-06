@@ -85,7 +85,7 @@ function replaceExtensionHooks(extensions) {
 }
 
 process.on('message', (options) => {
-  replaceExtensionHooks(options.transpileExtensions);
+  //replaceExtensionHooks(options.transpileExtensions);
   sourceMapSupport.install({
     environment: 'node',
     handleUncaughtExceptions: !!options.handleUncaughtExceptions,
