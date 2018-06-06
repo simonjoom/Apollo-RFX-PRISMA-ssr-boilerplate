@@ -13,7 +13,7 @@
   "author": "Simon <simon@skiscool.com> ",
   "license": "MIT",
   "scripts": {
-    "start": "npm run clean && cross-env NODE_ENV=development ./babel-watch/babel-watch.js server/index.js",
+    "start": "npm run clean && cross-env NODE_ENV=development node --inspect=5858 -r ts-node/register -r @babel/register -r dotenv/config server/index.js",
     "test": "cross-env NODE_ENV=development node --inspect=5858 -r ts-node/register -r @babel/register -r dotenv/config server/index.js",
     "test2": "npm run build:nodedev && cross-env NODE_ENV=development babel-node --inspect buildServer/index.js",
     "start:prod": "npm run build && npm run serve ",
