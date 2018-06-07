@@ -57,7 +57,6 @@ git clone https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate
 cd Apollo-RFX-PRISMA-ssr-boilerplate
 
 
-
 npm install -g prisma
 npm install -g graphql-cli
 npm install
@@ -108,9 +107,6 @@ npm install canvas --save
 brew install pkgconfig
 brew install cairo
 npm install canvas --save
-npm install bufferutil --save
-npm install ws --save-dev
-npm install utf-8-validate --save-dev
 
 you need to rebuild node-sass if you are updated node: (reinstall it if complaining)
 npm rebuild node-sass --force
