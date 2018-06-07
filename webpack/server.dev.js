@@ -7,7 +7,10 @@ const loadPartialConfig = require('@babel/core').loadPartialConfig
 const res = p => path.resolve(__dirname, p)
 const preset = loadPartialConfig({
   presets: [
-    [require('@babel/preset-env'), { useBuiltIns: false, modules: false, debug: true }],
+    [
+      require('@babel/preset-env'),
+      { useBuiltIns: 'entry', modules: false, debug: false }
+    ],
     require('@babel/preset-react'),
     require('@babel/preset-flow')
   ],
@@ -16,11 +19,14 @@ const preset = loadPartialConfig({
     require('@babel/plugin-syntax-dynamic-import'),
     require('babel-plugin-universal-import'),
     require('@babel/plugin-proposal-class-properties'),
-    [require('@babel/plugin-transform-runtime'), {
-      helpers: false,
-      polyfill: false,
-      regenerator: true
-    }]
+    [
+      require('@babel/plugin-transform-runtime'),
+      {
+        helpers: false,
+        polyfill: false,
+        regenerator: true
+      }
+    ]
   ]
 })
 
@@ -34,8 +40,12 @@ preset.options.babelrc = false
 // within Webpack and can properly make connections to client modules:
 const externals = fs
   .readdirSync(res('../node_modules'))
-  .filter(x =>
-    !/\.bin|react-universal-component|require-universal-module|react-event-listener|webpack-flush-chunks|path-to-regexp/.test(x))
+  .filter(
+    x =>
+      !/\.bin|react-universal-component|require-universal-module|react-event-listener|webpack-flush-chunks|path-to-regexp/.test(
+        x
+      )
+  )
   .reduce((externals, mod) => {
     externals[mod] = `commonjs ${mod}`
     return externals
@@ -67,7 +77,7 @@ module.exports = {
         include: /node_modules/,
         type: 'javascript/auto'
       },
-      {
+      /* {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         include: [
@@ -80,7 +90,7 @@ module.exports = {
             configFileName: path.resolve(__dirname, '../server/tsconfig.json'),
             useBabel: true,
             babelOptions: {
-              babelrc: false, /* Important line */
+              babelrc: false,
               presets: [
                 [require('@babel/preset-env'), { useBuiltIns: false, modules: false, debug: true }]
               ]
@@ -88,7 +98,7 @@ module.exports = {
             babelCore: '@babel/core' // needed for Babel v7
           }
         }
-      },
+      },*/
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -242,7 +252,8 @@ module.exports = {
               mimetype: 'application/font-woff',
               name: '[path][name].[ext]'
             }
-          }]
+          }
+        ]
       },
       {
         test: /\.ttf(\?.*)?$/,
@@ -255,7 +266,8 @@ module.exports = {
               mimetype: 'application/octet-stream',
               name: '[path][name].[ext]'
             }
-          }]
+          }
+        ]
       },
       {
         test: /\.woff2(\?.*)?$/,
@@ -268,7 +280,8 @@ module.exports = {
               mimetype: 'application/font-woff2',
               name: '[path][name].[ext]'
             }
-          }]
+          }
+        ]
       },
       {
         test: /\.otf(\?.*)?$/,
@@ -281,7 +294,8 @@ module.exports = {
               mimetype: 'font/opentype',
               name: '[path][name].[ext]'
             }
-          }]
+          }
+        ]
       },
       {
         test: /\.eot(\?.*)?$/,
@@ -294,12 +308,17 @@ module.exports = {
               mimetype: 'font/opentype',
               name: '[path][name].[ext]'
             }
-          }]
+          }
+        ]
       }
     ]
   },
   resolve: {
-    modules: [path.resolve(__dirname, '../'), path.resolve(__dirname, '../node_modules'), path.resolve(__dirname, '../font-awesome')],
+    modules: [
+      path.resolve(__dirname, '../'),
+      path.resolve(__dirname, '../node_modules'),
+      path.resolve(__dirname, '../font-awesome')
+    ],
     extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx', '.css', '.scss'], // for graphql assure be mjs before all other ext https://github.com/graphql/graphql-js/issues/1272#issuecomment-377384574
     alias: {
       'rfx-link': path.resolve(__dirname, '../lib/Link'),

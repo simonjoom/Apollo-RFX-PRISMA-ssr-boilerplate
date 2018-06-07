@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es5",
     "moduleResolution": "node",
     "module": "commonjs",
     "sourceMap": true,
     "noUnusedLocals": true,
-    "rootDir": "server/src",
-    "outDir": "server/dist"
-  },    
+    "rootDir": "src",
+    "outDir": "dist",
+    "lib": [
+      "esnext", "dom"
+    ]
+  },
   "include": [
-    "server/src/**/*.ts",
-    "server/src/**/*.js",
-    "server/src/*.js",
+        "src/**/*"
     ],
     "exclude": [
         "node_modules",

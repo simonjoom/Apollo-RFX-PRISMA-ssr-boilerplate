@@ -1,6 +1,11 @@
 {
   "presets": [
-    "@babel/env",
+    ["@babel/env", {
+      "useBuiltIns":"entry",
+      "targets":{
+        "node":"current"
+      }
+      }],
     "@babel/react",
     "@babel/flow"
   ]

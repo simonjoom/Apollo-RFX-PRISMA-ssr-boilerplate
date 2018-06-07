@@ -14,7 +14,9 @@
                 "run-script",
                 "test"
             ],
-            "port":5858
+            "port": 19337,
+            "console": "internalConsole",
+            "restart": true,
         }
     ]
 }

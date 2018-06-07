@@ -7,7 +7,10 @@ const loadPartialConfig = require('@babel/core').loadPartialConfig
 
 const preset = loadPartialConfig({
   presets: [
-    [require('@babel/preset-env'), { useBuiltIns: false, modules: 'commonjs', debug: true }],
+    [
+      require('@babel/preset-env'),
+      { useBuiltIns: false, modules: 'commonjs', debug: true }
+    ],
     require('@babel/preset-react'),
     require('@babel/preset-flow')
   ],
@@ -16,11 +19,14 @@ const preset = loadPartialConfig({
     require('@babel/plugin-syntax-dynamic-import'),
     require('babel-plugin-universal-import'),
     require('@babel/plugin-proposal-class-properties'),
-    [require('@babel/plugin-transform-runtime'), {
-      helpers: false,
-      polyfill: false,
-      regenerator: true
-    }]
+    [
+      require('@babel/plugin-transform-runtime'),
+      {
+        helpers: false,
+        polyfill: false,
+        regenerator: true
+      }
+    ]
   ]
 })
 
@@ -36,9 +42,11 @@ module.exports = {
   devtool: 'source-map',
   // devtool: "cheap-module-source-map",
   entry: {
-    main: ['./extract-css-chunks-webpack-plugin/hotModuleReplacement2',
+    main: [
+      './extract-css-chunks-webpack-plugin/hotModuleReplacement2',
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
-      path.resolve(__dirname, '../src/index.jsx')]
+      path.resolve(__dirname, '../src/index.jsx')
+    ]
   },
   cache: true,
   output: {
@@ -54,7 +62,7 @@ module.exports = {
         include: /node_modules/,
         type: 'javascript/auto'
       },
-      {
+      /*      {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         include: [
@@ -66,27 +74,15 @@ module.exports = {
           options: {
             useBabel: true,
             babelOptions: {
-              babelrc: false, /* Important line */
+              babelrc: false,
               presets: [
                 [require('@babel/preset-env'), { useBuiltIns: false, modules: 'commonjs', debug: true }]
               ]
-              /* ,plugins: [
-                "@babel/plugin-proposal-export-default-from",
-                "@babel/plugin-syntax-dynamic-import",
-                "universal-import",
-                "@babel/plugin-proposal-class-properties",
-                "@babel/plugin-proposal-object-rest-spread",
-                ["@babel/plugin-transform-runtime", {
-                  helpers: false,
-                  polyfill: false,
-                  regenerator: true
-                }]
-              ]*/
             },
             babelCore: '@babel/core' // needed for Babel v7
           }
         }
-      },
+      },*/
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -110,7 +106,8 @@ module.exports = {
                 modules: true,
                 localIdentName: '[name]__[local]--[hash:base64:5]'
               }
-            }]
+            }
+          ]
         })
       },
       {
@@ -142,11 +139,9 @@ module.exports = {
             name: '[path][name].[hash:8].[ext]'
           }
         }
-
       }
     ]
-  }, /*
-  optimization: {
+  } /*  optimization: {
      flagIncludedChunks:true,
      occurrenceOrder:true,
      namedModules:false,
@@ -177,7 +172,7 @@ module.exports = {
       }
     },
     minimize: false
-  },*/
+  },*/,
   resolve: {
     extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx', '.css', '.scss'],
     alias: {
@@ -193,7 +188,6 @@ module.exports = {
       minChunks: Infinity
     }),*/
 
-
     // new webpack.NoEmitOnErrorsPlugin(),
     new ExtractCssChunks(),
     new AutoDllPlugin({
@@ -201,7 +195,7 @@ module.exports = {
       context: path.join(__dirname, '..'),
       filename: '[name].js',
       config: { plugins: [] },
-inherit: true,
+      inherit: true,
       entry: {
         vendors: [
           'react',

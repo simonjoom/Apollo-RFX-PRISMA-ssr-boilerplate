@@ -24,7 +24,7 @@ We propose just to share one implementation , because this HOW-TO can help peopl
 - Apollo Playground in [http://localhost:4000/playground/](http://localhost:4000/playground/)
 - Redux integrated with Redux-first-router
 - Code splitting with react-universal-component
-- Webpack 4 with **babel-watch**
+- Webpack 4 using with ~~**babel-watch**~~ **ts-node** for watching ts files using nodemon
 - sass-loader/css-loader in hot reload
 - Babel 7.0 (latest)
 - react-intl working (flags and language management)
@@ -56,14 +56,24 @@ You can test redux-first-router on sandbox:
 git clone https://github.com/simonjoom/Apollo-RFX-PRISMA-ssr-boilerplate
 cd Apollo-RFX-PRISMA-ssr-boilerplate
 
+
+
+npm install -g prisma
+npm install -g graphql-cli
 npm install
+npm install iconv (i got some strange error else)
+cp -Rf ./myth ./node_modules/colors.css/ (to support last version for bass)
 
 npm run start
 ```
 
+nota if compilation stop:
+"Error: ENOENT: no such file or directory, open '/Users/simon/boilerplate/node_modules/.cache/autodll-webpack-plugin/development_instance_0_eb5b692a121be415174ccfc3c96419e9/stats.json'"
+remove the folder /Users/simon/boilerplate/node_modules/.cache
+
 Warning this boilerplate is depending svg working please see: [SVG](#svg) 
  
-we added inspect by default with babel-watch to help debug the code easy with vs-code
+vs-code
 
 For help, see: https://nodejs.org/en/docs/inspector
 

@@ -1,4 +1,4 @@
-import "@babel/polyfill"
+// import '@babel/polyfill'
 import path from 'path'
 import express from 'express'
 import favicon from 'serve-favicon'
@@ -7,11 +7,13 @@ import { AUTH_TOKEN, PORTAPI, PORT } from './constants'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
-//import { findVideos, findVideo } from './api'
-//import { GraphQLServer } from 'graphql-yoga'
+// import { findVideos, findVideo } from './api'
+// import { GraphQLServer } from 'graphql-yoga'
 
-import QLServer, { options } from "./src/index.ts"
-const chalk = require('chalk');
+import QLServer, { options } from './src/index.ts'
+
+const chalk = require('chalk')
+
 /*
 const { Prisma } = require('prisma-binding')
 const Query = require('./resolvers/Query')
@@ -29,18 +31,16 @@ const resolvers = {
 }
 */
 
-options.port = PORTAPI;
+options.port = PORTAPI
 const DEV = process.env.NODE_ENV === 'development'
 
 let clientConfig
-let serverConfig,
-  formatWebpackMessages
+let serverConfig, formatWebpackMessages
 if (DEV) {
   clientConfig = require('../webpack/client.dev')
   serverConfig = require('../webpack/server.dev')
   formatWebpackMessages = require('./formatmessage')
-}
-else {
+} else {
   clientConfig = require('../webpack/client.prod')
   serverConfig = require('../webpack/server.prod')
 }
@@ -48,21 +48,21 @@ else {
 const publicPath = clientConfig.output.publicPath
 const outputPath = clientConfig.output.path
 const jwToken = null
-//app.use(favicon(path.resolve(__dirname, '../public', 'favicon.ico')))
+// app.use(favicon(path.resolve(__dirname, '../public', 'favicon.ico')))
 // UNIVERSAL HMR + STATS HANDLING GOODNESS:
-
 const app = express()
+console.log('efe')
 app.get('/api/videos/:category', async (req, res) => {
   // const jwToken = req.headers.authorization.split(' ')[1]
-  //const data = await findVideos(req.params.category, jwToken)
-  const data = { category: "test" }
+  // const data = await findVideos(req.params.category, jwToken)
+  const data = { category: 'test' }
   res.json(data)
 })
 
 app.get('/api/video/:slug', async (req, res) => {
   // const jwToken = req.headers.authorization.split(' ')[1]
-  //const data = await findVideo(req.params.slug, jwToken)
-  const data = { category: "test" }
+  // const data = await findVideo(req.params.slug, jwToken)
+  const data = { category: 'test' }
   res.json(data)
 })
 /*
@@ -98,8 +98,8 @@ if (DEV) {
     devMiddleware = webpackDevMiddleware(multiCompiler, {
       publicPath,
       writeToDisk: true,
-      // hot: true,
-      // contentBase: publicPath,
+      hot: true,
+      contentBase: publicPath,
       watchContentBase: true,
       serverSideRender: true
     })
@@ -110,11 +110,12 @@ if (DEV) {
     app.use(hotMiddleware)
 
     app.use('/staticssr', express.static(serverConfig.output.path))
-    app.use(webpackHotServerMiddleware(multiCompiler, {
+    app.use(
+      webpackHotServerMiddleware(multiCompiler, {
         serverRendererOptions: { outputPath: clientConfig.output.path }
-      }))
-  }
-  catch (err) {
+      })
+    )
+  } catch (err) {
     isFirstCompile = true
     console.log(chalk.red('Failed to compile.'))
     console.log()
@@ -126,7 +127,6 @@ if (DEV) {
   multiCompiler.hooks.invalid.tap('invalid', () => {
     console.log('Compiling...')
   })
-
 
   multiCompiler.hooks.done.tap('done', stats => {
     // We have switched off the default Webpack output in WebpackDevServer
@@ -155,7 +155,7 @@ if (DEV) {
       }
       console.log(chalk.red('Failed to compile.\n'))
       console.log(messages.errors.join('\n\n'))
-      return;
+      return
     }
     isFirstCompile = false
 
@@ -165,29 +165,33 @@ if (DEV) {
       console.log(messages.warnings.join('\n\n'))
 
       // Teach some ESLint tricks.
-      console.log(`\nSearch for the ${
-        chalk.underline(chalk.yellow('keywords'))
-        } to learn more about each warning.`)
-      console.log(`To ignore, add ${
-        chalk.cyan('// eslint-disable-next-line')
-        } to the line before.\n`)
+      console.log(
+        `\nSearch for the ${chalk.underline(
+          chalk.yellow('keywords')
+        )} to learn more about each warning.`
+      )
+      console.log(
+        `To ignore, add ${chalk.cyan(
+          '// eslint-disable-next-line'
+        )} to the line before.\n`
+      )
     }
   })
 
-  var debug = typeof v8debug === 'object' || /--debug|--inspect/.test(process.execArgv.join(' '))
-  //just to inform there is a problem in serverside!
+  const debug =
+    typeof v8debug === 'object' ||
+    /--debug|--inspect/.test(process.execArgv.join(' '))
+  // just to inform there is a problem in serverside!
   if (!debug) {
-    app.use(function (error, req, res, next) {
+    app.use((error, req, res, next) => {
       // Gets called because of `wrapAsync()`
-      res.json({ message: error.message });
+      res.json({ message: error.message })
     })
   }
-}
-else {
+} else {
   const serverRender = require('../buildServer/main.js').default // eslint-disable-line import/no-unresolved
 
   const clientStats = require('../buildClient/stats.json') // eslint-disable-line import/no-unresolved
-
 
   app.use('/static', express.static(outputPath))
   app.use(serverRender({ clientStats, outputPath }))
@@ -199,4 +203,3 @@ else {
     })
   })
 }
-
