@@ -1,3 +1,16 @@
+
+
+THIS IS AN OUTDATED PROJECT
+if you need an universal Application around gatsby apollo using graphql (prisma) then just follow the link:
+Please right now refer to 
+https://github.com/simonjoom/Gatsby-apollo-chatkiller
+
+I think now gatsby remain the best to make a ssr react application to have nice SEO
+
+
+
+
+
 Apollo-RFX-PRISMA
 ===
 
